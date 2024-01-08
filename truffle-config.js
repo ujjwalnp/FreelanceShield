@@ -13,10 +13,19 @@ module.exports = {
   compilers: {
     solc: {
       version: '0.8.1',
-       optimizer: {
-         enabled: true,
-         runs: 200
-       },
+      settings: {
+        metadata: {
+          bytecodeHash: 'none',
+        },
+        optimizer: {
+          enabled: true,
+          runs: 800,
+          details: {
+            yul: true,
+          }
+        },
+        viaIR: false,
+      },
     },
   },
 
