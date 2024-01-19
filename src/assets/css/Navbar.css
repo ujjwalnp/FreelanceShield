@@ -16,7 +16,7 @@ select {
 }
 
 body {
-  background-color: #220941;
+  /* background-color: #220941; */
 }
 
 .nav {
@@ -79,7 +79,7 @@ body {
 }
 .nav__hamburger.active > span:first-child {
   transform: rotate(45deg) translateX(8.5px) translateY(9px);
-  background-color: #4062FF;
+  /* background-color: #4062FF; */
 }
 .nav__hamburger.active > span:nth-child(2) {
   transform: translateX(-100%);
@@ -87,7 +87,7 @@ body {
 }
 .nav__hamburger.active > span:last-child {
   transform: rotate(-45deg) translateX(8px) translateY(-8px);
-  background-color: #4062FF;
+  /* background-color: #4062FF; */
 }
 
 .nav__logo-min {
@@ -112,7 +112,7 @@ body {
 }
 
 .nav__menu:hover {
-  color: #4062FF;
+  /* color: #4062FF; */
 }
 
 .nav__menu svg,
@@ -126,12 +126,12 @@ body {
 }
 
 .nav__menu:hover svg path {
-  fill: #4062FF;
+  /* fill: #4062FF; */
 }
 
 .nav__menu.active {
   color: white;
-  background-color: #4062FF;
+  /* background-color: #4062FF; */
   border-radius: 16px;
 }
 
