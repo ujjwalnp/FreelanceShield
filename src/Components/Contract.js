@@ -34,28 +34,46 @@ export function Contract({ contracts }) {
           </span>
         
           <span className="mb-2 text-gray-500">
-            <span className='font-bold'>phone Number: </span> {contract.phoneNumber}
+            <span className='font-bold'>Freelancer's Address: </span> {contract.freelancer}
+          </span>
+          <span className="mb-2 text-gray-500">
+            <span className='font-bold'>Security Deposit Amount: </span> {contract.securityDepositAmount}
           </span>
           <span className="mb-2 text-gray-500">
             <span className='font-bold'>Total Budget: </span> {contract.totalBudget}
           </span>
-          <span className="mb-2 text-gray-500">
-            <span className='font-bold'>Company: </span> {contract.company}
-          </span>
           <span className='mb-2 text-gray-500'>
             <span className='font-bold '>Project Deadline: </span>
-            {contract.projectDeadline}
+            {contract.deadline}
           </span>
           <span className='mb-2 text-gray-500 flex gap-3'>
             <span className='font-bold'>
-                Security Deposit: </span>
-            {contract.securityDeposite}
+                Project State: </span>
+            {contract.state}
           </span>
           <span className='mb-2 text-gray-500 flex gap-3'>
             <span className='font-bold'>
-                Project Status: 
+                Freelancer Signed: 
             </span>
-            {contract.projectStatus}
+            {contract.freelancerSigned}
+          </span>
+          <span className='mb-2 text-gray-500 flex gap-3'>
+            <span className='font-bold'>
+                Client Signed: 
+            </span>
+            {contract.clientSigned}
+          </span>
+          <span className='mb-2 text-gray-500 flex gap-3'>
+            <span className='font-bold'>
+               Project Verified: 
+            </span>
+            {contract.projectVerified}
+          </span>
+          <span className='mb-2 text-gray-500 flex gap-3'>
+            <span className='font-bold'>
+               Fund Transferred: 
+            </span>
+            {contract.fundTransferred}
           </span>
           
 

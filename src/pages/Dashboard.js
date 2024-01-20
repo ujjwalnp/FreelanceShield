@@ -22,6 +22,7 @@ export const Dashboard = ({ currentAccount }) => {
   
     return (
       <div className="p-5">
+            <p>{currentAccount}</p>
         <div className="flex justify-end">
           <button className="p-3 bg-blue-400 rounded-lg text-white font-sans font-semibold">
             <Link to="/create">Create</Link>
