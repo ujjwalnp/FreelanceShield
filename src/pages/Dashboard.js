@@ -8,7 +8,9 @@ export const Dashboard = ({
   freelanceShieldContracts,
   depositSecurityDeposit,
   updateProjectState,
-  markProjectCompleted
+  markProjectCompleted,
+  verifyProject,
+  transferFund
 }) => {
   const [contracts, setContracts] = useState([]);
 
@@ -41,6 +43,8 @@ export const Dashboard = ({
         depositSecurityDeposit={depositSecurityDeposit}
         updateProjectState={updateProjectState}
         markProjectCompleted={markProjectCompleted}
+        verifyProject={verifyProject}
+        transferFund={transferFund}
       />
     </div>
   );

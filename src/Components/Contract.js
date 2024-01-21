@@ -11,7 +11,9 @@ export function Contract({
   contracts,
   depositSecurityDeposit,
   updateProjectState,
-  markProjectCompleted
+  markProjectCompleted,
+  verifyProject,
+  transferFund,
 }) {
   const [openContractIndex, setOpenContractIndex] = useState(null);
 
@@ -106,7 +108,28 @@ export function Contract({
       );
     }
     return null;
-  }
+  };
+
+  const renderVerifyProjectButton = (contract) => {
+    const role = identifyRole(contract);
+    if (role == "client" && contract.state == 2 && !contract.projectVerified) {
+      return (
+        <button onClick={() => verifyProject(contract)}>Verify Project</button>
+      );
+    }
+    return null;
+  };
+
+  const renderTransferFundButton = (contract) => {
+    const role = identifyRole(contract);
+    const transferAmount = contract.totalBudget;
+    if (role == "client" && contract.state == 2 && contract.projectVerified) {
+      return (
+        <button onClick={() => transferFund(contract, transferAmount)}>Transfer Fund</button>
+      );
+    }
+    return null;
+  };
 
   return (
     <div>
@@ -187,10 +210,16 @@ export function Contract({
               <span className="mb-2 text-gray-500 flex gap-3">
                 <span className="font-bold">Project Verified:</span>
                 {contract.projectVerified.toString()}
+                <div className="flex gap-2">
+                  {renderVerifyProjectButton(contract)}
+                </div>
               </span>
               <span className="mb-2 text-gray-500 flex gap-3">
                 <span className="font-bold">Fund Transferred:</span>
                 {contract.fundTransferred.toString()}
+                <div className="flex gap-2">
+                  {renderTransferFundButton(contract)}
+                </div>
               </span>
             </div>
           )}

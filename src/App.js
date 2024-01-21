@@ -7,7 +7,7 @@ import { Create } from "./pages/Create";
 
 import "./App.css";
 import Navbar from "./Components/Navbar";
-import { ethToWei, weiToEth } from './utils';
+import { ethToWei } from "./utils";
 
 import freelanceShieldContract from "./abis/FreelanceShieldContract.json";
 
@@ -33,7 +33,9 @@ function App() {
           deployedNetwork && deployedNetwork.address
         );
 
-        const allContracts = await contractInstance.methods.getAllContracts().call();
+        const allContracts = await contractInstance.methods
+          .getAllContracts()
+          .call();
 
         // Update the state with the fetched contracts
         setFreelanceShieldContracts(allContracts);
@@ -77,7 +79,7 @@ function App() {
 
       // Convert input values to appropriate types if needed (e.g., converting strings to integers)
       const deadlineTimestamp = Math.floor(new Date(deadline).getTime() / 1000);
-      
+
       // Call the createContract method
       await contractInstance.methods
         .createContract(
@@ -88,8 +90,8 @@ function App() {
           ethToWei(securityDepositAmount)
         )
         .send({ from: accounts[0] });
-            
-      console.log(ethToWei(totalBudget))
+
+      console.log(ethToWei(totalBudget));
       // Display success message
       Swal.fire({
         icon: "success",
@@ -132,20 +134,22 @@ function App() {
 
       // Display success message
       Swal.fire({
-        icon: 'success',
-        title: 'Security Deposit Deposited!',
+        icon: "success",
+        title: "Security Deposit Deposited!",
         text: `Security deposit has been successfully deposited as ${role} for contract ID ${contract.id}.`,
       });
 
       // Update the state with the latest contracts after the deposit
-      const updatedContracts = await contractInstance.methods.getAllContracts().call();
+      const updatedContracts = await contractInstance.methods
+        .getAllContracts()
+        .call();
       setFreelanceShieldContracts(updatedContracts);
     } catch (error) {
       // Handle errors
       console.error(`Error depositing security deposit as ${role}:`, error);
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
+        icon: "error",
+        title: "Oops...",
         text: `An error occurred while depositing security deposit as ${role}.`,
       });
     }
@@ -170,21 +174,23 @@ function App() {
 
       // Display success message
       Swal.fire({
-        icon: 'success',
-        title: 'Project State Updated!',
+        icon: "success",
+        title: "Project State Updated!",
         text: `Project state has been successfully updated for contract ID ${contract.id} to InProgress.`,
       });
 
       // Update the state with the latest contracts after updating project state
-      const updatedContracts = await contractInstance.methods.getAllContracts().call();
+      const updatedContracts = await contractInstance.methods
+        .getAllContracts()
+        .call();
       setFreelanceShieldContracts(updatedContracts);
     } catch (error) {
       // Handle errors
-      console.error('Error updating project state:', error);
+      console.error("Error updating project state:", error);
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'An error occurred while updating project state.',
+        icon: "error",
+        title: "Oops...",
+        text: "An error occurred while updating project state.",
       });
     }
   };
@@ -208,25 +214,103 @@ function App() {
 
       // Display success message
       Swal.fire({
-        icon: 'success',
-        title: 'Project Marked Completed!',
+        icon: "success",
+        title: "Project Marked Completed!",
         text: `The project has been marked as completed for contract ID ${contract.id}.`,
       });
 
       // Update the state with the latest contracts after marking project completed
-      const updatedContracts = await contractInstance.methods.getAllContracts().call();
+      const updatedContracts = await contractInstance.methods
+        .getAllContracts()
+        .call();
       setFreelanceShieldContracts(updatedContracts);
     } catch (error) {
       // Handle errors
-      console.error('Error marking project completed:', error);
+      console.error("Error marking project completed:", error);
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'An error occurred while marking the project as completed.',
+        icon: "error",
+        title: "Oops...",
+        text: "An error occurred while marking the project as completed.",
       });
     }
   };
 
+  // Function to verify the project
+  const verifyProject = async (contract) => {
+    try {
+      const web3 = new Web3(window.ethereum);
+      const accounts = await web3.eth.getAccounts();
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = freelanceShieldContract.networks[networkId];
+      const contractInstance = new web3.eth.Contract(
+        freelanceShieldContract.abi,
+        deployedNetwork && deployedNetwork.address
+      );
+
+      // Call the verifyProject method
+      await contractInstance.methods
+        .verifyProject(contract.id)
+        .send({ from: accounts[0] });
+
+      // Display success message
+      Swal.fire({
+        icon: "success",
+        title: "Project Verified!",
+        text: "The project has been successfully verified.",
+      });
+
+      // Update the state with the latest contracts after marking project completed
+      const updatedContracts = await contractInstance.methods
+        .getAllContracts()
+        .call();
+      setFreelanceShieldContracts(updatedContracts);
+    } catch (error) {
+      console.error("Error verifying project:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "An error occurred while verifying the project.",
+      });
+    }
+  };
+
+  const transferFund = async (contract, transferAmount) => {
+    try {
+      const web3 = new Web3(window.ethereum);
+      const accounts = await web3.eth.getAccounts();
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = freelanceShieldContract.networks[networkId];
+      const contractInstance = new web3.eth.Contract(
+        freelanceShieldContract.abi,
+        deployedNetwork && deployedNetwork.address
+      );
+
+      // Call the transferFund method
+      await contractInstance.methods
+        .transferFund(contract.id)
+        .send({ from: accounts[0], value: transferAmount });
+
+      // Display success message
+      Swal.fire({
+        icon: "success",
+        title: "Fund Transferred!",
+        text: "The fund has been successfully transferred & security deposit refunded to both parties",
+      });
+
+      // Update the state with the latest contracts after marking project completed
+      const updatedContracts = await contractInstance.methods
+        .getAllContracts()
+        .call();
+      setFreelanceShieldContracts(updatedContracts);
+    } catch (error) {
+      console.error("Error transferring fund:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "An error occurred while transferring the fund.",
+      });
+    }
+  };
 
   useEffect(() => {
     loadWeb3();
@@ -239,7 +323,12 @@ function App() {
         <Routes>
           <Route
             path="/create"
-            element={<Create createContract={createContract} setFreelanceShieldContracts={setFreelanceShieldContracts} />}
+            element={
+              <Create
+                createContract={createContract}
+                setFreelanceShieldContracts={setFreelanceShieldContracts}
+              />
+            }
           />
           <Route
             path="/"
@@ -250,6 +339,8 @@ function App() {
                 depositSecurityDeposit={depositSecurityDeposit}
                 updateProjectState={updateProjectState}
                 markProjectCompleted={markProjectCompleted}
+                verifyProject={verifyProject}
+                transferFund={transferFund}
               />
             }
           />
