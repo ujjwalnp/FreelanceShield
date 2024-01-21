@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export const Create = ({ addContract }) => {
+export const Create = ({ createContract, setFreelanceShieldContracts }) => {
   const [contractData, setContractData] = useState({
     projectName: "",
     freelancer: "",
@@ -30,11 +30,15 @@ export const Create = ({ addContract }) => {
       alert("Please fill in all required fields.");
       return;
     }
+
+    const numericSecurityDepositAmount = parseFloat(contractData.securityDepositAmount);
+    const numericTotalBudget = parseFloat(contractData.totalBudget);
+
     const newContract = {
       projectName: contractData.projectName,
       freelancer: contractData.freelancer,
-      securityDepositAmount: contractData.securityDepositAmount,
-      totalBudget: contractData.totalBudget,
+      securityDepositAmount: numericSecurityDepositAmount,
+      totalBudget: numericTotalBudget,
       deadline: contractData.deadline,
     };
 
@@ -47,14 +51,17 @@ export const Create = ({ addContract }) => {
       deadline: "",
     });
 
-    // Update contracts in the Dashboard component
-    addContract(newContract);
-    const updatedContracts =
-      JSON.parse(localStorage.getItem("contracts")) || [];
-    localStorage.setItem(
-      "contracts",
-      JSON.stringify([...updatedContracts, newContract])
-    );
+    // Call the createContract function
+    createContract(
+        newContract.freelancer,
+        newContract.projectName,
+        newContract.deadline,
+        newContract.totalBudget,
+        newContract.securityDepositAmount
+      );
+    
+      // update it to state vaiable to show it instantly
+      setFreelanceShieldContracts((prev) => [...prev, newContract]);
   };
 
   return (

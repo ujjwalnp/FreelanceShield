@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import Swal from 'sweetalert2';
-import Web3 from 'web3';
-import { Route, Routes } from 'react-router-dom';
-import { Dashboard } from './pages/Dashboard';
-import { Create } from './pages/Create';
+import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2";
+import Web3 from "web3";
+import { Route, Routes } from "react-router-dom";
+import { Dashboard } from "./pages/Dashboard";
+import { Create } from "./pages/Create";
 
-import './App.css';
-import Navbar from './Components/Navbar';
+import "./App.css";
+import Navbar from "./Components/Navbar";
+import { ethToWei, weiToEth } from './utils';
+
+import freelanceShieldContract from "./abis/FreelanceShieldContract.json";
 
 function App() {
-  const [currentAccount, setCurrentAccount] = useState('');
-  const [cfContract, setCFContract] = useState({});
-  const [contracts, setContracts] = useState([]);
+  const [currentAccount, setCurrentAccount] = useState("");
+  const [freelanceShieldContracts, setFreelanceShieldContracts] = useState([]);
+  const [projectContracts, setProjectContracts] = useState([]);
 
   const loadWeb3 = async () => {
     // Modern dapp browsers...
@@ -22,11 +25,23 @@ function App() {
         const { web3 } = window;
         const accounts = await web3.eth.getAccounts();
         setCurrentAccount(accounts[0]);
+        // Initialize the smart contract instance
+        const networkId = await web3.eth.net.getId();
+        const deployedNetwork = freelanceShieldContract.networks[networkId];
+        const contractInstance = new web3.eth.Contract(
+          freelanceShieldContract.abi,
+          deployedNetwork && deployedNetwork.address
+        );
+
+        const allContracts = await contractInstance.methods.getAllContracts().call();
+
+        // Update the state with the fetched contracts
+        setFreelanceShieldContracts(allContracts);
       } catch (error) {
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'User Rejected the Request!',
+          icon: "error",
+          title: "Oops...",
+          text: "User Rejected the Request!",
         });
       }
     }
@@ -35,17 +50,68 @@ function App() {
       window.web3 = new Web3(window.web3.currentProvider);
     } else {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'No browser wallet detected. You should consider trying MetaMask!',
+        icon: "error",
+        title: "Oops...",
+        text: "No browser wallet detected. You should consider trying MetaMask!",
       });
     }
   };
 
-  const addContract = (newContract) => {
-    setContracts((prevContracts) => [...prevContracts, newContract]);
-  };
+  // Function to create a contract
+  const createContract = async (
+    freelancerAddress,
+    projectName,
+    deadline,
+    totalBudget,
+    securityDepositAmount
+  ) => {
+    try {
+      const web3 = new Web3(window.ethereum);
+      const accounts = await web3.eth.getAccounts();
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = freelanceShieldContract.networks[networkId];
+      const contractInstance = new web3.eth.Contract(
+        freelanceShieldContract.abi,
+        deployedNetwork && deployedNetwork.address
+      );
 
+      // Convert input values to appropriate types if needed (e.g., converting strings to integers)
+      const deadlineTimestamp = Math.floor(new Date(deadline).getTime() / 1000);
+      
+      // Call the createContract method
+      await contractInstance.methods
+        .createContract(
+          freelancerAddress,
+          projectName,
+          deadlineTimestamp,
+          ethToWei(totalBudget),
+          ethToWei(securityDepositAmount)
+        )
+        .send({ from: accounts[0] });
+            
+      console.log(ethToWei(totalBudget))
+      // Display success message
+      Swal.fire({
+        icon: "success",
+        title: "Contract Created!",
+        text: "The contract has been successfully created.",
+      });
+
+      // Retrieve the newly created contract ID and other details (if needed)
+      // Example: const newContractId = await contractInstance.methods.getNewlyCreatedContractId().call();
+
+      // Add the new contract to the state in App.js
+      // Example: addContract({ id: newContractId, client: accounts[0], freelancer: freelancerAddress, ... });
+    } catch (error) {
+      // Handle errors
+      console.error("Error creating contract:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "An error occurred while creating the contract.",
+      });
+    }
+  };
 
   useEffect(() => {
     loadWeb3();
@@ -54,10 +120,21 @@ function App() {
   return (
     <div className="flex w-screen">
       <Navbar />
-      <div className='w-full'>
+      <div className="w-full">
         <Routes>
-          <Route path='/create' element={<Create addContract={addContract} />} />
-          <Route path="/" element={<Dashboard currentAccount={currentAccount} contracts={contracts} />} />
+          <Route
+            path="/create"
+            element={<Create createContract={createContract} setFreelanceShieldContracts={setFreelanceShieldContracts} />}
+          />
+          <Route
+            path="/"
+            element={
+              <Dashboard
+                currentAccount={currentAccount}
+                freelanceShieldContracts={freelanceShieldContracts}
+              />
+            }
+          />
         </Routes>
       </div>
     </div>

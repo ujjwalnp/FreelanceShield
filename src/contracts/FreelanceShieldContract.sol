@@ -157,4 +157,12 @@ contract FreelanceShieldContract {
 
         
     }
+
+    function getAllContracts() external view returns (Contract[] memory) {
+        Contract[] memory _contracts = new Contract[](contractCounter);
+        for (uint256 i = 0; i < contractCounter; i++) {
+            _contracts[i] = contracts[i + 1];
+        }
+        return _contracts;
+    }
 }

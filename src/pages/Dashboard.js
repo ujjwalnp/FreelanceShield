@@ -3,21 +3,22 @@ import { Contract } from "../Components/Contract"
 import { useEffect, useState } from "react"
 import { Link } from 'react-router-dom'
 
-export const Dashboard = ({ currentAccount }) => {
+export const Dashboard = ({ currentAccount, freelanceShieldContracts }) => {
     const [contracts, setContracts] = useState([]);
     
   
     useEffect(() => {
-      // Load contracts from local storage on component mount
-      const storedContracts = JSON.parse(localStorage.getItem('contracts')) || [];
-      setContracts(storedContracts);
-    }, []);
+        // Check if freelanceShieldContracts is not undefined before setting the state
+        if (freelanceShieldContracts !== undefined) {
+          setContracts(freelanceShieldContracts);
+        }
+      }, [freelanceShieldContracts]); // Add freelanceShieldContracts as a dependency
+    
   
     const addContract = (newContract) => {
       // Update contracts and store in local storage
       const updatedContracts = [...contracts, newContract];
       setContracts(updatedContracts);
-      localStorage.setItem('contracts', JSON.stringify(updatedContracts));
     };
   
     return (
