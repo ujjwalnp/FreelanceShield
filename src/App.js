@@ -151,6 +151,83 @@ function App() {
     }
   };
 
+  // Function to update project state
+  const updateProjectState = async (contract) => {
+    try {
+      const web3 = new Web3(window.ethereum);
+      const accounts = await web3.eth.getAccounts();
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = freelanceShieldContract.networks[networkId];
+      const contractInstance = new web3.eth.Contract(
+        freelanceShieldContract.abi,
+        deployedNetwork && deployedNetwork.address
+      );
+
+      // Call the updateProjectState method
+      await contractInstance.methods
+        .updateProjectState(contract.id)
+        .send({ from: accounts[0] });
+
+      // Display success message
+      Swal.fire({
+        icon: 'success',
+        title: 'Project State Updated!',
+        text: `Project state has been successfully updated for contract ID ${contract.id} to InProgress.`,
+      });
+
+      // Update the state with the latest contracts after updating project state
+      const updatedContracts = await contractInstance.methods.getAllContracts().call();
+      setFreelanceShieldContracts(updatedContracts);
+    } catch (error) {
+      // Handle errors
+      console.error('Error updating project state:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'An error occurred while updating project state.',
+      });
+    }
+  };
+
+  // Function to mark project as completed
+  const markProjectCompleted = async (contract) => {
+    try {
+      const web3 = new Web3(window.ethereum);
+      const accounts = await web3.eth.getAccounts();
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = freelanceShieldContract.networks[networkId];
+      const contractInstance = new web3.eth.Contract(
+        freelanceShieldContract.abi,
+        deployedNetwork && deployedNetwork.address
+      );
+
+      // Call the markProjectCompleted method
+      await contractInstance.methods
+        .markProjectCompleted(contract.id)
+        .send({ from: accounts[0] });
+
+      // Display success message
+      Swal.fire({
+        icon: 'success',
+        title: 'Project Marked Completed!',
+        text: `The project has been marked as completed for contract ID ${contract.id}.`,
+      });
+
+      // Update the state with the latest contracts after marking project completed
+      const updatedContracts = await contractInstance.methods.getAllContracts().call();
+      setFreelanceShieldContracts(updatedContracts);
+    } catch (error) {
+      // Handle errors
+      console.error('Error marking project completed:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'An error occurred while marking the project as completed.',
+      });
+    }
+  };
+
+
   useEffect(() => {
     loadWeb3();
   }, []);
@@ -171,6 +248,8 @@ function App() {
                 currentAccount={currentAccount}
                 freelanceShieldContracts={freelanceShieldContracts}
                 depositSecurityDeposit={depositSecurityDeposit}
+                updateProjectState={updateProjectState}
+                markProjectCompleted={markProjectCompleted}
               />
             }
           />

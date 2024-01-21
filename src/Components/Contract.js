@@ -6,7 +6,13 @@ function convertBigIntToString(value) {
   return value.toString();
 }
 
-export function Contract({ currentAccount, contracts, depositSecurityDeposit }) {
+export function Contract({
+  currentAccount,
+  contracts,
+  depositSecurityDeposit,
+  updateProjectState,
+  markProjectCompleted
+}) {
   const [openContractIndex, setOpenContractIndex] = useState(null);
 
   const handleToggleContract = (index) => {
@@ -31,7 +37,6 @@ export function Contract({ currentAccount, contracts, depositSecurityDeposit }) 
   }
 
   function identifyRole(contract) {
-    console.log(currentAccount);
     if (contract.freelancer === currentAccount) {
       return "freelancer";
     } else if (contract.client === currentAccount) {
@@ -43,24 +48,66 @@ export function Contract({ currentAccount, contracts, depositSecurityDeposit }) 
 
   const renderDepositButton = (contract) => {
     const role = identifyRole(contract);
-    console.log(contract.securityDepositAmount)
     if (role == "freelancer" && !contract.freelancerSigned) {
       return (
-        <button onClick={() => depositSecurityDeposit(role, contract, contract.securityDepositAmount)}>
+        <button
+          onClick={() =>
+            depositSecurityDeposit(
+              role,
+              contract,
+              contract.securityDepositAmount
+            )
+          }
+        >
           Deposit
         </button>
       );
     } else if (role == "client" && !contract.clientSigned) {
-        return (
-            <button onClick={() => depositSecurityDeposit(role, contract, contract.securityDepositAmount)}>
-            Deposit
-            </button>
-        );
+      return (
+        <button
+          onClick={() =>
+            depositSecurityDeposit(
+              role,
+              contract,
+              contract.securityDepositAmount
+            )
+          }
+        >
+          Deposit
+        </button>
+      );
     }
     return null;
   };
-  
-  console.log(contracts)
+
+  const renderChangeToInProgressButton = (contract) => {
+    const role = identifyRole(contract);
+    if (
+      role == "freelancer" &&
+      contract.freelancerSigned &&
+      contract.state == 0
+    ) {
+      return (
+        <button onClick={() => updateProjectState(contract)}>
+          Change to InProgress
+        </button>
+      );
+    }
+    return null;
+  };
+
+  const renderMarkProjectCompletedButton = (contract) => {
+    const role = identifyRole(contract);
+    if (role == "freelancer" && contract.state == 1) {
+      return (
+        <button onClick={() => markProjectCompleted(contract)}>
+          Mark Project Completed
+        </button>
+      );
+    }
+    return null;
+  }
+
   return (
     <div>
       {contracts.map((contract, index) => (
@@ -81,7 +128,9 @@ export function Contract({ currentAccount, contracts, depositSecurityDeposit }) 
               <span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
                 {identifyRole(contract)}
               </span>
-              <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">{getStateString(Number(contract.state))}</span>
+              <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                {getStateString(Number(contract.state))}
+              </span>
               <button onClick={() => handleToggleContract(index)}>
                 {openContractIndex === index ? "▲" : "▼"}
               </button>
@@ -105,11 +154,9 @@ export function Contract({ currentAccount, contracts, depositSecurityDeposit }) 
               <span className="mb-2 text-gray-500">
                 <span className="font-bold">Security Deposit Amount: </span>{" "}
                 {weiToEth(contract.securityDepositAmount)} ETH
-                
                 <div className="flex gap-2">
-                {renderDepositButton(contract)}
-              
-              </div>
+                  {renderDepositButton(contract)}
+                </div>
               </span>
               <span className="mb-2 text-gray-500">
                 <span className="font-bold">Total Budget: </span>{" "}
@@ -124,6 +171,10 @@ export function Contract({ currentAccount, contracts, depositSecurityDeposit }) 
               <span className="mb-2 text-gray-500 flex gap-3">
                 <span className="font-bold">Project State: </span>
                 {getStateString(Number(contract.state))}
+                <div className="flex gap-2">
+                  {renderChangeToInProgressButton(contract)}
+                  {renderMarkProjectCompletedButton(contract)}
+                </div>
               </span>
               <span className="mb-2 text-gray-500 flex gap-3">
                 <span className="font-bold">Freelancer Signed:</span>

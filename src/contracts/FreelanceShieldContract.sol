@@ -91,10 +91,10 @@ contract FreelanceShieldContract {
         emit SecurityDepositDeposited(contractId, msg.sender, msg.value);
     }
 
-    function updateProjectState(uint256 contractId, ProjectState newState) external onlyFreelancer(contractId) {
+    function updateProjectState(uint256 contractId) external onlyFreelancer(contractId) {
         require(contracts[contractId].freelancerSigned, "Freelancer must sign the contract first");
-        contracts[contractId].state = newState;
-        emit ProjectStateChanged(contractId, newState);
+        contracts[contractId].state = ProjectState.InProgress;
+        emit ProjectStateChanged(contractId, ProjectState.InProgress);
     }
 
     function markProjectCompleted(uint256 contractId) external onlyFreelancer(contractId) {
