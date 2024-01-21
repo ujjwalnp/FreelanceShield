@@ -3,7 +3,7 @@ import { Contract } from "../Components/Contract"
 import { useEffect, useState } from "react"
 import { Link } from 'react-router-dom'
 
-export const Dashboard = ({ currentAccount, freelanceShieldContracts }) => {
+export const Dashboard = ({ currentAccount, freelanceShieldContracts, depositSecurityDeposit }) => {
     const [contracts, setContracts] = useState([]);
     
   
@@ -31,7 +31,7 @@ export const Dashboard = ({ currentAccount, freelanceShieldContracts }) => {
         </div>
   
         <h1 className="text-2xl font-bold mt-10 mb-10">Contracts</h1>
-        <Contract contracts={contracts} />
+        <Contract currentAccount={currentAccount} contracts={contracts} depositSecurityDeposit={depositSecurityDeposit} />
       </div>
     );
   };

@@ -5,6 +5,7 @@ contract FreelanceShieldContract {
     enum ProjectState { Created, InProgress, Completed, Closed, Cancelled }
 
     struct Contract {
+        uint256 id;
         address client;
         address freelancer;
         uint256 securityDepositAmount;
@@ -53,6 +54,7 @@ contract FreelanceShieldContract {
     ) external {
         contractCounter++;
         contracts[contractCounter] = Contract({
+            id: contractCounter,
             client: msg.sender,
             freelancer: _freelancer,
             state: ProjectState.Created,

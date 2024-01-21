@@ -113,6 +113,44 @@ function App() {
     }
   };
 
+  // Function to deposit security deposit
+  const depositSecurityDeposit = async (role, contract, depositAmount) => {
+    try {
+      const web3 = new Web3(window.ethereum);
+      const accounts = await web3.eth.getAccounts();
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = freelanceShieldContract.networks[networkId];
+      const contractInstance = new web3.eth.Contract(
+        freelanceShieldContract.abi,
+        deployedNetwork && deployedNetwork.address
+      );
+
+      // Call the depositSecurityDeposit method
+      await contractInstance.methods
+        .depositSecurityDeposit(contract.id)
+        .send({ from: accounts[0], value: depositAmount });
+
+      // Display success message
+      Swal.fire({
+        icon: 'success',
+        title: 'Security Deposit Deposited!',
+        text: `Security deposit has been successfully deposited as ${role} for contract ID ${contract.id}.`,
+      });
+
+      // Update the state with the latest contracts after the deposit
+      const updatedContracts = await contractInstance.methods.getAllContracts().call();
+      setFreelanceShieldContracts(updatedContracts);
+    } catch (error) {
+      // Handle errors
+      console.error(`Error depositing security deposit as ${role}:`, error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: `An error occurred while depositing security deposit as ${role}.`,
+      });
+    }
+  };
+
   useEffect(() => {
     loadWeb3();
   }, []);
@@ -132,6 +170,7 @@ function App() {
               <Dashboard
                 currentAccount={currentAccount}
                 freelanceShieldContracts={freelanceShieldContracts}
+                depositSecurityDeposit={depositSecurityDeposit}
               />
             }
           />
