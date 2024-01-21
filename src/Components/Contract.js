@@ -53,6 +53,8 @@ export function Contract({
     if (role == "freelancer" && !contract.freelancerSigned) {
       return (
         <button
+          type="button"
+          className="bg-green-100 text-green-800 text-sm font-semibold me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
           onClick={() =>
             depositSecurityDeposit(
               role,
@@ -90,7 +92,11 @@ export function Contract({
       contract.state == 0
     ) {
       return (
-        <button onClick={() => updateProjectState(contract)}>
+        <button
+          type="button"
+          className="bg-yellow-100 text-yellow-800 text-sm font-semibold me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300"
+          onClick={() => updateProjectState(contract)}
+        >
           Change to InProgress
         </button>
       );
@@ -102,7 +108,11 @@ export function Contract({
     const role = identifyRole(contract);
     if (role == "freelancer" && contract.state == 1) {
       return (
-        <button onClick={() => markProjectCompleted(contract)}>
+        <button
+          type="button"
+          className="bg-green-100 text-green-800 text-sm font-semibold me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+          onClick={() => markProjectCompleted(contract)}
+        >
           Mark Project Completed
         </button>
       );
@@ -114,7 +124,13 @@ export function Contract({
     const role = identifyRole(contract);
     if (role == "client" && contract.state == 2 && !contract.projectVerified) {
       return (
-        <button onClick={() => verifyProject(contract)}>Verify Project</button>
+        <button
+          type="button"
+          className="bg-green-100 text-green-800 text-sm font-semibold me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+          onClick={() => verifyProject(contract)}
+        >
+          Verify Project
+        </button>
       );
     }
     return null;
@@ -125,7 +141,13 @@ export function Contract({
     const transferAmount = contract.totalBudget;
     if (role == "client" && contract.state == 2 && contract.projectVerified) {
       return (
-        <button onClick={() => transferFund(contract, transferAmount)}>Transfer Fund</button>
+        <button
+          type="button"
+          className="bg-red-100 text-red-800 text-sm font-semibold me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300"
+          onClick={() => transferFund(contract, transferAmount)}
+        >
+          Transfer Fund
+        </button>
       );
     }
     return null;
@@ -174,7 +196,7 @@ export function Contract({
                 <span className="font-bold">Freelancer's Address: </span>{" "}
                 {contract.freelancer}
               </span>
-              <span className="mb-2 text-gray-500">
+              <span className="mb-2 text-gray-500 flex gap-3">
                 <span className="font-bold">Security Deposit Amount: </span>{" "}
                 {weiToEth(contract.securityDepositAmount)} ETH
                 <div className="flex gap-2">

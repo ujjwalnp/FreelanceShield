@@ -63,7 +63,7 @@ const Navbar = () => {
               <Link to="/"> Dashboard </Link>
             </a>
           </li>
-          <li class="mb-3">
+          {/* <li class="mb-3">
             <a class="nav__menu flex flex-align-center ">
               <svg
                 width="24"
@@ -113,7 +113,7 @@ const Navbar = () => {
               </svg>
               Statistics
             </a>
-          </li>
+          </li> */}
           <li class="mb-3">
             <a class="nav__menu flex flex-align-center">
               <svg
@@ -128,10 +128,10 @@ const Navbar = () => {
                   fill="black"
                 />
               </svg>
-              Profile
+              About Us
             </a>
           </li>
-          <li class="mb-3">
+          {/* <li class="mb-3">
             <a class="nav__menu flex flex-align-center">
               <svg
                 width="24"
@@ -147,7 +147,7 @@ const Navbar = () => {
               </svg>
               Settings
             </a>
-          </li>
+          </li> */}
         </ul>
         <ul class="nav__logouts flex flex-column flex-justify-between"></ul>
       </nav>
