@@ -16,6 +16,12 @@ Go into the directory
 cd [project_folder]
 ```
 Install the dependencies running 
+Install the dependencies running 
+1. Copy the `.env.example` file to `.env`.
+2. Obtain an Infura API key and set it as the value for `INFURA_API_KEY` in the `.env` file.
+3. Replace `your_mnemonic_here` with your actual mnemonic phrase in the `.env` file.
+4. Run the following commands in your terminal:
+
 ```
 npm install 
 npm install -g truffle
