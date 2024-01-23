@@ -63,7 +63,7 @@ const Navbar = () => {
                   fill="black"
                 />
               </svg>
-              <Link to="/"> Dashboard </Link>
+              <Link to="/dashboard"> Dashboard </Link>
             </a>
           </li>
           {/* <li class="mb-3">
