@@ -10,6 +10,9 @@ import Navbar from "./Components/Navbar";
 import { ethToWei } from "./utils";
 
 import freelanceShieldContract from "./abis/FreelanceShieldContract.json";
+import { Home } from "./pages/Home";
+import { AboutUs } from "./pages/AboutUs";
+import { TopNav } from "./Components/Top-Navbar";
 
 function App() {
   const [currentAccount, setCurrentAccount] = useState("");
@@ -316,23 +319,39 @@ function App() {
     loadWeb3();
   }, []);
 
-  return (
-    <div className="flex w-screen">
-      <Navbar />
+  return (<>
+
+
+    
       <div className="w-full">
-        <Routes>
+        <Routes> <Route path="/" element={
+        <div className="h-20  flex flex-col">
+        <TopNav />
+         <Home />
+        </div>
+       } />
+    <Route path="/about" element={<div className="h-20  flex flex-col">
+        <TopNav />
+         <AboutUs />
+        </div>} />
           <Route
             path="/create"
             element={
+              <div className="flex">
+              <Navbar />
+              
               <Create
                 createContract={createContract}
                 setFreelanceShieldContracts={setFreelanceShieldContracts}
               />
+              </div>
             }
           />
           <Route
-            path="/"
+            path="/dashboard"
             element={
+              <div className="flex w-screen">
+              <Navbar />
               <Dashboard
                 currentAccount={currentAccount}
                 freelanceShieldContracts={freelanceShieldContracts}
@@ -342,11 +361,13 @@ function App() {
                 verifyProject={verifyProject}
                 transferFund={transferFund}
               />
+              </div>
             }
           />
         </Routes>
       </div>
-    </div>
+  
+    </>
   );
 }
 

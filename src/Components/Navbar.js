@@ -22,6 +22,7 @@ const Navbar = () => {
           <span className="hamburger-line"></span>
           <span className="hamburger-line"></span>
         </div>
+        
         <svg
           width="45"
           height="145"
@@ -44,7 +45,9 @@ const Navbar = () => {
             xmlns="http://www.w3.org/2000/svg"
             class="nav__logo mb-11"
           >
+            <Link to="/">
             <image href={logo} width="130" height="50" x="5" y="5" />
+            </Link>
           </svg>
           <li class="mt-8 mb-3">
             <a class="nav__menu active flex flex-align-center">
@@ -115,6 +118,7 @@ const Navbar = () => {
             </a>
           </li> */}
           <li class="mb-3">
+            <Link to="/about">
             <a class="nav__menu flex flex-align-center">
               <svg
                 width="24"
@@ -130,6 +134,7 @@ const Navbar = () => {
               </svg>
               About Us
             </a>
+            </Link>
           </li>
           {/* <li class="mb-3">
             <a class="nav__menu flex flex-align-center">

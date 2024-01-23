@@ -28,7 +28,7 @@ export const Dashboard = ({
   };
 
   return (
-    <div className="p-5">
+    <div className="p-5 w-screen">
       <span class="bg-gray-100 text-gray-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">{currentAccount}</span>
       <div className="flex justify-end">
         <button className="p-3 bg-blue-400 rounded-lg text-white font-sans font-semibold">
