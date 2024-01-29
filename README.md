@@ -30,7 +30,7 @@ Install the rest of the dependencies if necessary.
 Compile the files with 
 ```
 truffle compile
-truffle migrate --network ropsten
+truffle migrate --network sepolia
 ```
 Run the project using
 ```
