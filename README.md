@@ -39,6 +39,6 @@ npm start
 ```
 
 # Contributions
-Contributions are always welcome! Open a PR or an issue!
+Contributions are welcome! If you'd like to contribute to this repository, please follow the guidelines in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
 # Thank You!
