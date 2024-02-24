@@ -17,7 +17,6 @@ import { TopNav } from "./Components/Top-Navbar";
 function App() {
   const [currentAccount, setCurrentAccount] = useState("");
   const [freelanceShieldContracts, setFreelanceShieldContracts] = useState([]);
-  const [projectContracts, setProjectContracts] = useState([]);
 
   const loadWeb3 = async () => {
     // Modern dapp browsers...
