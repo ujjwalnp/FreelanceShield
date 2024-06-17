@@ -9,11 +9,11 @@ It is a platform governed by an escrow-based smart contract that is designed to 
 To run the code, you can either copy the contract and use Remix IDE. Or you can clone the repository using
 
 ```bash
-git clone
+git clone https://github.com/ujjwalnp/FreelanceShield.git
 ```
 Go into the directory
 ```
-cd [project_folder]
+cd FreelanceShield
 ```
 Install the dependencies running 
 Install the dependencies running 
